@@ -18,6 +18,8 @@ router.post("/Register", async (req, res, next) => {
       email: req.body.email,
       profilePic: req.body.profilePic
     }
+    // throw { status: 400, message: "Fail" };
+
     let users = [];
     users = await DButils.execQuery("SELECT username from users");
 
