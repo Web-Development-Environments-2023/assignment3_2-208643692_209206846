@@ -38,7 +38,7 @@ async function getRecipeDetails(recipe_id) {
 }
 
 
-=======
+
 // /**
 //  * Get 3 random recipes list from spooncular response and extract the relevant recipe data for preview
 //  * @param {*} recipes_info 
