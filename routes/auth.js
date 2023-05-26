@@ -10,6 +10,7 @@ router.post("/Register", async (req, res, next) => {
     // valid parameters
     // username exists
     let user_details = {
+      user_id: req.body.user_id, // todo delete and give from inside the system
       username: req.body.username,
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -33,7 +34,7 @@ router.post("/Register", async (req, res, next) => {
     );
     
     await DButils.execQuery(
-      `INSERT INTO users VALUES ('${user_details.username}', '${user_details.firstname}', '${user_details.lastname}',
+      `INSERT INTO users VALUES ('${user_details.user_id}', '${user_details.username}', '${user_details.firstname}', '${user_details.lastname}',
       '${user_details.country}', '${hash_password}', '${user_details.email}')`
     );
     

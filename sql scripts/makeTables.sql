@@ -1,4 +1,5 @@
 CREATE TABLE `users` (
+    `user_id` int NOT NULL PRIMARY KEY,
     `username` VARCHAR(255),
     `firstname` VARCHAR(255),
     `lastname` VARCHAR(255),

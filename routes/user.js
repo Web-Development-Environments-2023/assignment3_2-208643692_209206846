@@ -7,18 +7,18 @@ const recipe_utils = require("./utils/recipes_utils");
 /**
  * Authenticate all incoming requests by middleware
  */
-router.use(async function (req, res, next) {
-  if (req.session && req.session.user_id) {
-    DButils.execQuery("SELECT user_id FROM users").then((users) => {
-      if (users.find((x) => x.user_id === req.session.user_id)) {
-        req.user_id = req.session.user_id;
-        next();
-      }
-    }).catch(err => next(err));
-  } else {
-    res.sendStatus(401);
-  }
-});
+// router.use(async function (req, res, next) {
+//   if (req.session && req.session.user_id) {
+//     DButils.execQuery("SELECT user_id FROM users").then((users) => {
+//       if (users.find((x) => x.user_id === req.session.user_id)) {
+//         req.user_id = req.session.user_id;
+//         next();
+//       }
+//     }).catch(err => next(err));
+//   } else {
+//     res.sendStatus(401);
+//   }
+// });
 
 
 /**
@@ -26,8 +26,9 @@ router.use(async function (req, res, next) {
  */
 router.post('/favorites', async (req,res,next) => {
   try{
-    const user_id = req.session.user_id;
-    const recipe_id = req.body.recipeId;
+    const user_id = req.body.user_id;
+    // const user_id = req.session.user_id; // todo: when client side will be coded do authenticate with session remark auth above
+    const recipe_id = req.body.recipe_id;
     await user_utils.markAsFavorite(user_id,recipe_id);
     res.status(200).send("The Recipe successfully saved as favorite");
     } catch(error){
@@ -38,15 +39,19 @@ router.post('/favorites', async (req,res,next) => {
 /**
  * This path returns the favorites recipes that were saved by the logged-in user
  */
-router.get('/favorites', async (req,res,next) => {
+router.get('/favorites/:user_id', async (req,res,next) => {
   try{
-    const user_id = req.session.user_id;
+    // const user_id = req.session.user_id;
+    const user_id = req.params.user_id
+    console.log("user_id: " + user_id)
     let favorite_recipes = {};
     const recipes_id = await user_utils.getFavoriteRecipes(user_id);
+    console.log(recipes_id)
     let recipes_id_array = [];
     recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
-    const results = await recipe_utils.getRecipesPreview(recipes_id_array);
-    res.status(200).send(results);
+    // const results = await recipe_utils.getRecipesPreview(recipes_id_array); 
+    const results = recipes_id_array
+    res.status(200).send(JSON.stringify(results)); // todo change
   } catch(error){
     next(error); 
   }
