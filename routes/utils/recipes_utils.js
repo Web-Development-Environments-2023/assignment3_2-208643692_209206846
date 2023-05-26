@@ -32,8 +32,7 @@ async function getRecipeDetails(recipe_id) {
         popularity: aggregateLikes,
         vegan: vegan,
         vegetarian: vegetarian,
-        glutenFree: glutenFree,
-        
+        glutenFree: glutenFree,     
     }
 }
 
@@ -84,6 +83,6 @@ async function getRandomRecipes(){
 }
 
 exports.getRecipeDetails = getRecipeDetails;
-
+exports.getRecipeDetails = getRandomRecipes;
 
 

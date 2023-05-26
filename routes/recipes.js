@@ -22,7 +22,7 @@ router.get("/:recipeId", async (req, res, next) => {
  * This path creates a new recipe
  */
 // TODO: check if needed, maybe not a request
-router.post("/:createRecipe", async (req, res, next) => {
+router.post("/createRecipe", async (req, res, next) => {
   try {
     let recipe_details = {
       // TODO: use counter for recipe ids (?)
