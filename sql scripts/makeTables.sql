@@ -18,9 +18,11 @@ CREATE TABLE `mydb`.`FavoriteRecipes` (
     `recipe_id` int NOT NULL);
 
 
-CREATE TABLE `mydb`.`LastWatch` (  
-    `user_id` int NOT NULL PRIMARY KEY,
-    `recipe_id` int NOT NULL);
+CREATE TABLE `mydb`.`LastWatch` (
+  `user_id` INT NOT NULL,
+  `recipe_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`, `recipe_id`)
+);
 
 CREATE TABLE `recipes` (
     `id` INT NOT NULL PRIMARY KEY,
