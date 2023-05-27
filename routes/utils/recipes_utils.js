@@ -115,7 +115,7 @@ async function getRecipeDetailsDecorator(user_id, recipe_id) {
 
     let id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree;
 
-    if (!recipe_info){ // if the recipe not in ower data base we will call external api
+    if (recipe_info.length === 0){ // if the recipe not in ower data base we will call external api
         recipe_info = await getRecipeInformation(recipe_id);
         ({id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree} = recipe_info.data);
     }
@@ -136,7 +136,6 @@ async function getRecipeDetailsDecorator(user_id, recipe_id) {
         glutenFree: glutenFree,     
     }
 }
-
 
 
 exports.getRecipeDetails = getRecipeDetails;

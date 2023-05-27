@@ -7,18 +7,18 @@ const recipes_utils = require("./utils/recipes_utils");
 /**
  * Authenticate all incoming requests by middleware
  */
-// router.use(async function (req, res, next) {
-//   if (req.session && req.session.user_id) {
-//     DButils.execQuery("SELECT user_id FROM users").then((users) => {
-//       if (users.find((x) => x.user_id === req.session.user_id)) {
-//         req.user_id = req.session.user_id;
-//         next();
-//       }
-//     }).catch(err => next(err));
-//   } else {
-//     res.sendStatus(401);
-//   }
-// });
+router.use(async function (req, res, next) {
+  if (req.session && req.session.user_id) {
+    DButils.execQuery("SELECT user_id FROM users").then((users) => {
+      if (users.find((x) => x.user_id === req.session.user_id)) {
+        req.user_id = req.session.user_id;
+        next();
+      }
+    }).catch(err => next(err));
+  } else {
+    res.sendStatus(401);
+  }
+});
 
 
 /**
@@ -26,8 +26,8 @@ const recipes_utils = require("./utils/recipes_utils");
  */
 router.post('/favorites', async (req,res,next) => {
   try{
-    const user_id = req.body.user_id;
-    // const user_id = req.session.user_id; // todo: when client side will be coded do authenticate with session remark auth above
+    // const user_id = req.body.user_id;
+    const user_id = req.session.user_id; // todo: when client side will be coded do authenticate with session remark auth above
     const recipe_id = req.body.recipe_id;
     await user_utils.markAsFavorite(user_id,recipe_id);
     res.status(200).send("The Recipe successfully saved as favorite");
@@ -39,10 +39,10 @@ router.post('/favorites', async (req,res,next) => {
 /**
  * This path returns the favorites recipes that were saved by the logged-in user
  */
-router.get('/favorites/:user_id', async (req,res,next) => {
+router.get('/favorites', async (req,res,next) => {
   try{
-    // const user_id = req.session.user_id;
-    const user_id = req.params.user_id
+    const user_id = req.session.user_id;
+    // const user_id = req.params.user_id
     console.log("user_id: " + user_id)
     let favorite_recipes = {};
     const recipes_id = await user_utils.getFavoriteRecipes(user_id);
@@ -62,8 +62,8 @@ router.get('/favorites/:user_id', async (req,res,next) => {
  */
 router.post('/MyFamilyRecipes', async (req,res,next) => {
   try{
-    // const user_id = req.session.user_id;
-    const user_id = req.body.user_id;
+    const user_id = req.session.user_id;
+    // const user_id = req.body.user_id;
     const recipe_id = req.body.recipe_id;
     await user_utils.markAsFamilyRecipe(user_id, recipe_id);
     res.status(200).send("The Recipe successfully saved as family recipe");
@@ -77,10 +77,49 @@ router.post('/MyFamilyRecipes', async (req,res,next) => {
  */
 router.get('/MyFamilyRecipes', async (req,res,next) => {
   try{
-    // const user_id = req.session.user_id;
-    const user_id = req.body.user_id;
+    const user_id = req.session.user_id;
+    // const user_id = req.body.user_id;
     // let favorite_recipes = {};
     const recipes_id = await user_utils.getFamilyRecipes(user_id);
+    let recipes_id_array = [];
+    recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
+    // const results = await recipe_utils.getRecipesPreview(recipes_id_array);
+    const results = recipes_id_array
+    res.status(200).send(results);
+  } catch(error){
+    next(error); 
+  }
+});
+
+// /**
+//  * This path returns the family recipes that were saved by the logged-in user
+//  */
+// router.get('/MyFamilyRecipes/:recipe_id', async (req,res,next) => {
+//   try{
+//     const user_id = req.session.user_id;
+//     const recipe_id = req.params.recipe_id;
+//     // let favorite_recipes = {};
+//     const recipes_id = await user_utils.getFamilyRecipes(user_id);
+//     let recipes_id_array = [];
+//     recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
+//     // const results = await recipe_utils.getRecipesPreview(recipes_id_array);
+//     const results = recipes_id_array
+//     res.status(200).send(results);
+//   } catch(error){
+//     next(error); 
+//   }
+// });
+
+
+/**
+ * This path returns the my recipes that were saved by the logged-in user
+ */
+router.get('/MyRecipes', async (req,res,next) => {
+  try{
+    const user_id = req.session.user_id;
+    // const user_id = req.body.user_id;
+    // let favorite_recipes = {};
+    const recipes_id = await user_utils.getMyRecipes(user_id);
     let recipes_id_array = [];
     recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
     // const results = await recipe_utils.getRecipesPreview(recipes_id_array);
@@ -112,10 +151,12 @@ router.get("/recipeId/:recipeId", async (req, res, next) => {
 router.get('/lastWatched', async (req,res,next) => {
   try{
     const user_id = req.session.user_id;
-    const recipes_id = await user_utils.getRecipesFromLastWatched(user_id);
+    const recipes_id = await recipes_utils.getRecipesFromLastWatched(user_id);
     let recipes_id_array = [];
     recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
-    const results = await recipe_utils.getRecipesPreview(recipes_id_array);
+    // const results = await recipes_utils.getRecipesPreview(recipes_id_array);
+    // res.status(200).send(results);
+    const results = recipes_id_array
     res.status(200).send(results);
   } catch(error){
     next(error); 

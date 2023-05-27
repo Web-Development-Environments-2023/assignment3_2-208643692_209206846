@@ -8,15 +8,29 @@ router.get("/", (req, res) => res.send("im here"));
 /**
  * This path returns a full details of a recipe by its id
  */
+// router.get("/:recipeId", async (req, res, next) => {
+//   try {
+//     const recipe = await recipes_utils.getRecipeDetails(req.params.recipeId);
+//     res.send(recipe);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+/**
+ * Version with save to last watch
+ * not sure but i did that this function will save the last watch to table 
+ * workind
+ */
 router.get("/:recipeId", async (req, res, next) => {
   try {
-    const recipe = await recipes_utils.getRecipeDetails(req.params.recipeId);
+    const user_id = req.session.user_id;
+    const recipe = await recipes_utils.getRecipeDetailsDecorator(user_id,req.params.recipeId);
     res.send(recipe);
   } catch (error) {
     next(error);
   }
 });
-
 
 /**
  * This path creates a new recipe
