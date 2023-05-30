@@ -60,6 +60,7 @@ router.get('/favorites', async (req,res,next) => {
 /**
  * This path gets body with recipeId and save this recipe in the Family table of the logged-in user
  */
+// TODO: remove this function
 router.post('/MyFamilyRecipes', async (req,res,next) => {
   try{
     const user_id = req.session.user_id;
@@ -75,6 +76,7 @@ router.post('/MyFamilyRecipes', async (req,res,next) => {
 /**
  * This path returns the family recipes that were saved by the logged-in user
  */
+//TODO: move to recipes
 router.get('/MyFamilyRecipes', async (req,res,next) => {
   try{
     const user_id = req.session.user_id;

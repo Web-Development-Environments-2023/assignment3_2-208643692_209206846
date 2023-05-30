@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const recipes_utils = require("./utils/recipes_utils");
+const DButils = require("../routes/utils/DButils");
 
 router.get("/", (req, res) => res.send("im here"));
 
@@ -36,6 +37,7 @@ router.get("/:recipeId", async (req, res, next) => {
  * This path creates a new recipe
  */
 // TODO: check if needed, maybe not a request
+// TODO: move to user functions
 router.post("/createRecipe", async (req, res, next) => {
   try {
     let recipe_details = {
@@ -72,7 +74,7 @@ router.post("/createRecipe", async (req, res, next) => {
 /**
  * This path returns five random recipes
  */
-router.get("/:randomRecipes", async (req, res, next) => {
+router.get("/randomRecipes", async (req, res, next) => {
   try {
     const randomRecipes = await recipes_utils.getRandomRecipes();
     res.send(randomRecipes);
