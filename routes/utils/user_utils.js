@@ -9,6 +9,10 @@ async function getFavoriteRecipes(user_id){
     return recipes_id;
 }
 
+async function deleteFavoriteRecipe(user_id, recipe_id){
+    return await DButils.execQuery(`DELETE FROM FavoriteRecipes WHERE user_id='${user_id}' AND recipe_id='${recipe_id}'`);
+}
+
 async function markAsFamilyRecipe(user_id, recipe_id){
     await DButils.execQuery(`insert into FamilyRecipesTable values ('${user_id}',${recipe_id})`); 
 }
@@ -27,6 +31,11 @@ async function getMyRecipes(user_id){
     return recipes_id;
 }
 
+async function markRecipeAsWatched(user_id, recipe_id){
+    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    await DButils.execQuery(`INSERT INTO LastWatch VALUES ('${user_id}', ${recipe_id}, '${currentDate}')`);
+}
+
 
 exports.markAsFavorite = markAsFavorite;
 exports.getFavoriteRecipes = getFavoriteRecipes;
@@ -36,3 +45,5 @@ exports.getFamilyRecipes = getFamilyRecipes;
 
 exports.markAsMyRecipe = markAsMyRecipe;
 exports.getMyRecipes = getMyRecipes;
+exports.markRecipeAsWatched = markRecipeAsWatched;
+exports.deleteFavoriteRecipe = deleteFavoriteRecipe;
