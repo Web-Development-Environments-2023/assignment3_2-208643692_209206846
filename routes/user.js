@@ -80,9 +80,9 @@ router.get('/favorites', async (req,res,next) => {
     console.log(recipes_id)
     let recipes_id_array = [];
     recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
-    // const results = await recipe_utils.getRecipesPreview(recipes_id_array); 
-    const results = recipes_id_array
-    res.status(200).send(JSON.stringify(results)); // todo change
+    let recipes_id_array_with_details = await recipes_utils.getRecipes(recipes_id_array);
+    const results = await recipes_utils.getPreviewRecipes(recipes_id_array_with_details,user_id);
+    res.status(200).send(results);
   } catch(error){
     next(error); 
   }
@@ -96,7 +96,7 @@ router.delete('/favorites/:recipe_id', async (req,res,next) => {
     const user_id = req.session.user_id; // todo: when client side will be coded do authenticate with session remark auth above
     const recipe_id = req.params.recipe_id;
     await user_utils.deleteFavoriteRecipe(user_id,recipe_id);
-    res.status(200).send("The Recipe successfully deleted as favorite");
+    res.status(200).send("The Recipe successfully deleted from favorite");
     } catch(error){
     next(error);
   }
@@ -115,8 +115,8 @@ router.get('/MyFamilyRecipes', async (req,res,next) => {
     const recipes_id = await user_utils.getFamilyRecipes(user_id);
     let recipes_id_array = [];
     recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
-    // const results = await recipe_utils.getRecipesPreview(recipes_id_array);
-    const results = recipes_id_array
+    let recipes_id_array_with_details = await recipes_utils.getRecipes(recipes_id_array);
+    const results = await recipes_utils.getPreviewRecipes(recipes_id_array_with_details,user_id);
     res.status(200).send(results);
   } catch(error){
     next(error); 
@@ -133,8 +133,8 @@ router.get('/MyRecipes', async (req,res,next) => {
     const recipes_id = await user_utils.getMyRecipes(user_id);
     let recipes_id_array = [];
     recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
-    // const results = await recipe_utils.getRecipesPreview(recipes_id_array);
-    const results = recipes_id_array
+    let recipes_id_array_with_details = await recipes_utils.getRecipes(recipes_id_array);
+    const results = await recipes_utils.getPreviewRecipes(recipes_id_array_with_details,user_id);
     res.status(200).send(results);
   } catch(error){
     next(error); 
@@ -151,9 +151,8 @@ router.get('/lastWatched', async (req,res,next) => {
     const recipes_ids = await recipes_utils.getRecipesFromLastWatched(user_id);
     let recipes_id_array = [];
     recipes_ids.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
-    // const results = await recipes_utils.getRecipesPreview(recipes_id_array);
-    // res.status(200).send(results);
-    const results = recipes_id_array
+    let recipes_id_array_with_details = await recipes_utils.getRecipes(recipes_id_array);
+    const results = await recipes_utils.getPreviewRecipes(recipes_id_array_with_details,user_id);
     res.status(200).send(results);
   } catch(error){
     next(error); 
@@ -161,7 +160,34 @@ router.get('/lastWatched', async (req,res,next) => {
 });
 
 
+/**
+ * This path returns three random recipes
+ */
+router.get("/random", async (req, res, next) => {
+  try {
+    const user_id = req.session.user_id;
+    const randomRecipesIds = await recipes_utils.getRandomRecipes();
+    let recipes_id_array_with_details = await recipes_utils.getRecipes(randomRecipesIds);
+    const results = await recipes_utils.getPreviewRecipes(recipes_id_array_with_details,user_id);
+    res.send(results);
+  } catch (error) {
+    next(error);
+  }
+});
 
+router.get("/searchRecipes", async (req, res, next) => {
+  try {
+    const arrayRecipes = await recipes_utils.getFromSearchRecipes(req.query);
+    if (arrayRecipes.length == 0) {
+      throw { status: 404, message: "No recipes found" };
+    }
+    const user_id = req.session.user_id;
+    res.send(await recipes_utils.getPreviewRecipes(arrayRecipes, user_id));
+
+  } catch (error) {
+    next({ status: 400, message: "Request failed" });
+  }
+});
 
 
 module.exports = router;

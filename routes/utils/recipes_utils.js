@@ -37,11 +37,15 @@ async function getRecipeDetails(recipe_id) {
 
 async function getRandomRecipes(){
     let url=`${api_domain}/random?number=3&apiKey=${process.env.spooncular_apiKey}`; // choose 3 random Recipes
+    // let url="https://api.spoonacular.com/recipes/random?number=3&apiKey=7d9a298f97664f3fbcebf0a9924818b0"
+    console.log("enter")
     const data1= await axios.get(url)
+    console.log("after axios")
     let res=[]
     console.log(data1.data["recipes"].length)
     for (let i = 0; i< data1.data["recipes"].length; i++){
-        res.push(await getRecipeDetails( data1.data["recipes"][i].id))
+        res.push(data1.data["recipes"][i].id);
+        // res.push(await getRecipeDetails( data1.data["recipes"][i].id))
     } 
     return res
 }
@@ -55,19 +59,19 @@ async function getRecipesFromLastWatched() {
 
 
 
-async function getFromSearchRecipes({ searchTerm, quantity, cuisine, diet, intolerances, sortBy }) {
-    const finalQuantity = quantity ? quantity : 5;
+async function getFromSearchRecipes({ query, number, cuisine, diet, intolerances, sort }) {
+    let numberIn = number ? number : 5;
 
     const data = await axios.get(`${api_domain}/complexSearch`, {
         params: {
-            query: searchTerm,
-            number: finalQuantity,
+            query: query,
+            number: numberIn,
             cuisine: cuisine,
             diet: diet,
             intolerances: intolerances,
             instructionsRequired: true,
             addRecipeInformation: true,
-            sort: sortBy,
+            sort: sort,
             apiKey: process.env.spooncular_apiKey
         }
     });
@@ -105,10 +109,19 @@ async function getPreviewRecipes(arrayRecipes, user_id) {
     return arrayPreviewRecipes;
 }
 
+async function getRecipes(recipes_id) {
+    const promises = [];
+    recipes_id.map(id => {
+        promises.push(getRecipeDetails(id));
+    });
+    return await Promise.all(promises);
+}
+
 
 exports.getRecipeDetails = getRecipeDetails;
 exports.getRandomRecipes = getRandomRecipes;
 exports.getRecipesFromLastWatched = getRecipesFromLastWatched;
 exports.getFromSearchRecipes = getFromSearchRecipes;
 exports.getPreviewRecipes = getPreviewRecipes;
+exports.getRecipes = getRecipes
 
