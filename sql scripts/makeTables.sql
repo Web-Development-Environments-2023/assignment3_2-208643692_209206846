@@ -12,15 +12,13 @@ CREATE TABLE `users` (
 
 CREATE TABLE `mydb`.`FamilyRecipesTable` (  
     recipe_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
     title VARCHAR(100),
     image VARCHAR(255),
     readyInMinutes INT,
     author VARCHAR(100),
     occasion VARCHAR(100),
     extendedIngredients TEXT,
-    instructions TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    instructions TEXT
 );
 
 CREATE TABLE `mydb`.`FavoriteRecipes` (  
@@ -33,7 +31,7 @@ CREATE TABLE `mydb`.`FavoriteRecipes` (
 CREATE TABLE `mydb`.`LastWatch` (
   `user_id` INT NOT NULL,
   `recipe_id` INT NOT NULL,
-  `date` DATE NOT NULL,
+  `date` DATETIME NOT NULL,
   PRIMARY KEY (`user_id`, `recipe_id`, `date`),
   FOREIGN KEY (`user_id`) REFERENCES users(`user_id`)
 );

@@ -103,27 +103,6 @@ router.delete('/favorites/:recipe_id', async (req,res,next) => {
   }
 })
 
-
-/**
- * This path returns the family recipes that were saved by the logged-in user
- */
-//TODO: move to recipes
-router.get('/MyFamilyRecipes', async (req,res,next) => {
-  try{
-    const user_id = req.session.user_id;
-    // const user_id = req.body.user_id;
-    // let favorite_recipes = {};
-    const recipes_id = await user_utils.getFamilyRecipes(user_id);
-    let recipes_id_array = [];
-    recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
-    let recipes_id_array_with_details = await recipes_utils.getRecipes(recipes_id_array);
-    const results = await recipes_utils.getPreviewRecipes(recipes_id_array_with_details,user_id);
-    res.status(200).send(results);
-  } catch(error){
-    next(error); 
-  }
-});
-
 /**
  * This path returns the my recipes that were saved by the logged-in user
  */

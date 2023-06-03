@@ -109,6 +109,143 @@ paths:
           description: user is not authorized
       security:
       - cookieAuth: []
+    delete:
+      tags:
+      - Users
+      summary: delete recipe in the favorites list of a user
+      description: delete recipe in the favorites list of a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reciepeId:
+                  type: string
+                  description: reciepe's id which the user deleted
+                  example: 716429
+      responses:
+        "200":
+          description: The Recipe successfully deleted as favorite
+        "401":
+          description: user is not authorized
+      security:
+      - cookieAuth: []
+  /users/createRecipe:
+    post:
+      tags:
+      - Users
+      summary: create new recipe
+      description: create new recipe
+      requestBody:
+        content:
+          application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MyRecipePreview'
+      responses:
+        "201":
+          description: recipe created
+        "401":
+          description: user is not authorized
+      security:
+      - cookieAuth: []
+  /users/MyRecipes:
+    get:
+      tags:
+      - Users
+      summary: Return created recipes
+      description: Return created recipes
+      responses:
+        "200":
+          description: data about the user's created recipes returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MyRecipePreview'
+        "401":
+          description: user is not authorized
+      security:
+      - cookieAuth: []
+  /users/lastWatched:
+    get:
+      tags:
+      - Users
+      summary: Return 3 last watched recipes
+      description: Return 3 last watched recipes
+      responses:
+        "200":
+          description: data about the user's last watched recipes returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipePreview'
+        "401":
+          description: user is not authorized
+      security:
+      - cookieAuth: []
+  /users/random:
+    get:
+      tags:
+      - Users
+      summary: Return 3 random recipes
+      description: Return 3 random recipes
+      responses:
+        "200":
+          description: data about the random recipes returned to user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipePreview'
+        "401":
+          description: user is not authorized
+      security:
+      - cookieAuth: []
+  /users/searchRecipes:
+    get:
+      tags:
+      - Users
+      summary: Return recipes with searched specifications
+      description: Return recipes with searched specifications
+      responses:
+        "200":
+          description: data about the recipes returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipePreview'
+        "401":
+          description: user is not authorized
+      security:
+      - cookieAuth: []
+  /recipes/MyFamilyRecipes/All:
+    get:
+      tags:
+      - Users
+      summary: Return the built in family recipes
+      description: Return the built in family recipes
+      responses:
+        "200":
+          description: data about the family recipes returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FamilyRecipePreview'
+        "401":
+          description: user is not authorized
+      security:
+      - cookieAuth: []
   /recipes/{recipeId}:
     get:
       tags:
@@ -227,4 +364,87 @@ components:
           type: boolean
           description: indication if the recipe is gluten free
           example: false
-  
+    MyRecipePreview:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: recipe identifier
+          example: 102
+        title:
+          type: string
+          description: recipe name
+          example: Simple Macaroni and Cheese
+        image:
+          type: string
+          description: recipe image
+          format: URL
+          example: https://spoonacular.com/recipeimages/655455-566x370.jpg
+        readyInMinutes:
+          type: integer
+          description: the time takes to make this recipe
+          example: 45
+        popularity:
+          type: integer
+          description: how many likes got this recipe
+          example: 5987
+        vegetarian:
+          type: boolean
+          description: indication if the recipe is vegetarian
+          example: false
+        vegan:
+          type: boolean
+          description: indication if the recipe is vegan
+          example: false
+        glutenFree:
+          type: boolean
+          description: indication if the recipe is gluten free
+          example: false
+        instructions:
+          type: text
+          description: instructions
+          example: stir the pot, add salt, peal the potatoes
+        servings:
+          type: integer
+          description: amount of dishes
+          example: 3
+        extendedIngredients:
+          type: text
+          description: detailed ingredients
+          example: a cup of sugar
+    FamilyRecipePreview:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: recipe identifier
+          example: 102
+        title:
+          type: string
+          description: recipe name
+          example: Simple Macaroni and Cheese
+        image:
+          type: string
+          description: recipe image
+          format: URL
+          example: https://spoonacular.com/recipeimages/655455-566x370.jpg
+        readyInMinutes:
+          type: integer
+          description: the time takes to make this recipe
+          example: 45
+        author:
+          type: string
+          description: creator name
+          example: Savta Shuli
+        instructions:
+          type: text
+          description: instructions
+          example: stir the pot, add salt, peal the potatoes
+        occasion:
+          type: string
+          description: when to make
+          example: birthday
+        extendedIngredients:
+          type: text
+          description: detailed ingredients
+          example: a cup of sugar
