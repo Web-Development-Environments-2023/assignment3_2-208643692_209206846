@@ -26,6 +26,7 @@ router.use(async function (req, res, next) {
  */
 router.post("/createRecipe", async (req, res, next) => {
   try {
+    const user_id = req.session.user_id;
     let recipe_details = {
       // id: req.body.id,
       title: req.body.title,
@@ -41,8 +42,8 @@ router.post("/createRecipe", async (req, res, next) => {
     }
 
     await DButils.execQuery(
-      `INSERT INTO recipes (title, readyInMinutes, image, popularity, vegan, vegetarian,
-        glutenFree, instructions, servings, extendedIngredients) VALUES ('${recipe_details.title}',
+      `INSERT INTO recipes (user_id, title, readyInMinutes, image, popularity, vegan, vegetarian,
+        glutenFree, instructions, servings, extendedIngredients) VALUES ('${user_id}','${recipe_details.title}',
         '${recipe_details.readyInMinutes}', '${recipe_details.image}', '${recipe_details.popularity}',
         '${recipe_details.vegan}', '${recipe_details.vegetarian}', '${recipe_details.glutenFree}',
         '${recipe_details.instructions}', '${recipe_details.servings}', '${recipe_details.extendedIngredients}')`
@@ -129,12 +130,10 @@ router.get('/MyFamilyRecipes', async (req,res,next) => {
 router.get('/MyRecipes', async (req,res,next) => {
   try{
     const user_id = req.session.user_id;
-    // let favorite_recipes = {};
     const recipes_id = await user_utils.getMyRecipes(user_id);
     let recipes_id_array = [];
-    recipes_id.map((element) => recipes_id_array.push(element.recipe_id)); //extracting the recipe ids into array
-    let recipes_id_array_with_details = await recipes_utils.getRecipes(recipes_id_array);
-    const results = await recipes_utils.getPreviewRecipes(recipes_id_array_with_details,user_id);
+    recipes_id.map((element) => recipes_id_array.push(element.id)); //extracting the recipe ids into array
+    const results = await recipes_utils.getMyRecipes(recipes_id_array);
     res.status(200).send(results);
   } catch(error){
     next(error); 

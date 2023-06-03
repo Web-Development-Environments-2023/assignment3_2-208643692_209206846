@@ -35,6 +35,11 @@ async function getRecipeDetails(recipe_id) {
     }
 }
 
+async function getMyRecipeDetails(recipe_id) {
+    let res = await DButils.execQuery(`select * from recipes where id='${recipe_id}'`);
+    return res[0];
+}
+
 async function getRandomRecipes(){
     let url=`${api_domain}/random?number=3&apiKey=${process.env.spooncular_apiKey}`; // choose 3 random Recipes
     // let url="https://api.spoonacular.com/recipes/random?number=3&apiKey=7d9a298f97664f3fbcebf0a9924818b0"
@@ -117,6 +122,14 @@ async function getRecipes(recipes_id) {
     return await Promise.all(promises);
 }
 
+async function getMyRecipes(recipes_id) {
+    const promises = [];
+    recipes_id.map(id => {
+        promises.push(getMyRecipeDetails(id));
+    });
+    return await Promise.all(promises);
+}
+
 
 exports.getRecipeDetails = getRecipeDetails;
 exports.getRandomRecipes = getRandomRecipes;
@@ -124,4 +137,5 @@ exports.getRecipesFromLastWatched = getRecipesFromLastWatched;
 exports.getFromSearchRecipes = getFromSearchRecipes;
 exports.getPreviewRecipes = getPreviewRecipes;
 exports.getRecipes = getRecipes
+exports.getMyRecipes = getMyRecipes
 
