@@ -81,11 +81,11 @@ async function getFromSearchRecipes({ query, number, cuisine, diet, intolerances
 async function getPreviewRecipes(arrayRecipes, user_id) {
     const arrayPreviewRecipes = arrayRecipes.map(recipe => {
         return {
-            recipe_id: recipe.id,
-            name: recipe.title,
-            preparationTimeInMinutes: recipe.readyInMinutes,
-            imageURL: recipe.image,
-            numOfLikes: recipe.aggregateLikes,
+            recipeId: recipe.id,
+            title: recipe.title,
+            readyInMinutes: recipe.readyInMinutes,
+            image: recipe.image,
+            aggregateLikes: recipe.aggregateLikes,
             vegan: recipe.vegan,
             vegetarian: recipe.vegetarian,
             glutenFree: recipe.glutenFree,

@@ -8,6 +8,22 @@ const user_utils = require("./utils/user_utils");
 router.get("/", (req, res) => res.send("im here"));
 
 /**
+ * This path returns three random recipes
+ */
+router.get("/random", async (req, res, next) => {
+  try {
+    const user_id = undefined;
+    const randomRecipesIds = await recipes_utils.getRandomRecipes();
+    let recipes_id_array_with_details = await recipes_utils.getRecipes(randomRecipesIds);
+    const results = await recipes_utils.getPreviewRecipes(recipes_id_array_with_details,user_id);
+    res.send(results);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+/**
  * Version with save to last watch
  * not sure but i did that this function will save the last watch to table 
  * workind
