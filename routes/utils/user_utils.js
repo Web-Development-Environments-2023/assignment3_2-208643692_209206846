@@ -18,7 +18,7 @@ async function markAsFamilyRecipe(user_id, recipe_id){
 }
 
 async function getFamilyRecipes(user_id){
-    const recipes_id = await DButils.execQuery(`select recipe_id from FamilyRecipesTable where user_id='${user_id}'`);
+    const recipes_id = await DButils.execQuery(`select recipe_id from FamilyRecipesTable`);
     return recipes_id;
 }
 
@@ -27,7 +27,7 @@ async function markAsMyRecipe(user_id, recipe_id){
 }
 
 async function getMyRecipes(user_id){
-    const recipes_id = await DButils.execQuery(`select recipe_id from recipes where user_id='${user_id}'`);
+    const recipes_id = await DButils.execQuery(`select id from recipes where user_id='${user_id}'`);
     return recipes_id;
 }
 
