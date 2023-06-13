@@ -33,7 +33,9 @@ router.get("/:recipeId", async (req, res, next) => {
     const user_id = req.session.user_id;
     const recipe_id = req.params.recipeId
     const recipe = await recipes_utils.getRecipeDetails(recipe_id)
-    await user_utils.markRecipeAsWatched(user_id,recipe_id);
+    if(req.session && req.session.user_id){
+      await user_utils.markRecipeAsWatched(user_id,recipe_id);
+    }
     res.send(recipe);
   } catch (error) {
     next(error);
