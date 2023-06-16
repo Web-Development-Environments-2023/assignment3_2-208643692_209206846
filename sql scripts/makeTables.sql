@@ -51,3 +51,8 @@ CREATE TABLE `recipes` (
     `extendedIngredients` TEXT,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+CREATE TABLE recipeoptions (
+    option_type VARCHAR(255),
+    choice VARCHAR(255)
+);

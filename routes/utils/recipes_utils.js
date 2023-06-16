@@ -63,7 +63,29 @@ async function getRecipesFromLastWatched() {
     return result;
   }
 
-
+async function getOptions(){
+let data = await DButils.execQuery
+    (`SELECT * FROM recipeoptions`);
+let cousines = [];
+let diets = [];
+let intolerances = [];
+for(element of data){
+    switch(element.option_type){
+        case "Cuisines":
+            cousines.push(element.choice)    
+            break;
+        case "Diet Definitions":
+            diets.push(element.choice)    
+            break;
+        case "Intolerances":
+            intolerances.push(element.choice)    
+            break;
+    }        
+}
+return {
+    cousines:cousines, diets:diets, intolerances:intolerances
+}
+}
 
 
 async function getFromSearchRecipes({ query, number, cuisine, diet, intolerances, sort }) {
@@ -140,4 +162,4 @@ exports.getFromSearchRecipes = getFromSearchRecipes;
 exports.getPreviewRecipes = getPreviewRecipes;
 exports.getRecipes = getRecipes
 exports.getMyRecipes = getMyRecipes
-
+exports.getOptions = getOptions

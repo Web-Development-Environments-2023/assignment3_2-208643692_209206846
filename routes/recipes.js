@@ -22,6 +22,19 @@ router.get("/random", async (req, res, next) => {
   }
 });
 
+router.get("/searchRecipes", async (req, res, next) => {
+  try {
+    const arrayRecipes = await recipes_utils.getFromSearchRecipes(req.query);
+    if (arrayRecipes.length == 0) {
+      throw { status: 404, message: "No recipes found" };
+    }
+    const user_id = req.session.user_id;
+    res.send(await recipes_utils.getPreviewRecipes(arrayRecipes, user_id));
+
+  } catch (error) {
+    next({ status: 400, message: "Request failed" });
+  }
+});
 
 /**
  * Version with save to last watch
@@ -41,6 +54,18 @@ router.get("/:recipeId", async (req, res, next) => {
     next(error);
   }
 });
+
+/**
+ * get options for recipe search
+ */
+router.get('/Options/RecipeSearch', async (req,res,next)=>{
+  try {
+    const options = await recipes_utils.getOptions();
+    res.send(options);
+  } catch (error) {
+    next(error);
+  }
+})
 
 /**
  * This path returns the family recipes that were saved by the logged-in user
