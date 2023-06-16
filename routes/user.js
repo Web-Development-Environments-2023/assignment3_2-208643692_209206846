@@ -119,6 +119,20 @@ router.get('/MyRecipes', async (req,res,next) => {
   }
 });
 
+router.get("/:recipeId", async (req, res, next) => {
+  try {
+    const user_id = req.session.user_id;
+    const recipe_id = req.params.recipeId
+    const recipe = await user_utils.getMyRecipe(recipe_id);
+    // if(req.session && req.session.user_id){
+    //   await user_utils.markRecipeAsWatched(user_id,recipe_id);
+    // }
+    res.send(recipe);
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 /**
  * This path returns three randome recipes on each click
