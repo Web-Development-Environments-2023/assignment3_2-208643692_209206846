@@ -92,7 +92,7 @@ async function getPreviewRecipes(arrayRecipes, user_id) {
             title: recipe.title,
             readyInMinutes: recipe.readyInMinutes,
             image: recipe.image,
-            aggregateLikes: recipe.aggregateLikes,
+            popularity: recipe.popularity,
             vegan: recipe.vegan,
             vegetarian: recipe.vegetarian,
             glutenFree: recipe.glutenFree,
