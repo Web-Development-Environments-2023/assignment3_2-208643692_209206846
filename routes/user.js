@@ -141,17 +141,17 @@ router.get('/lastWatched', async (req,res,next) => {
 /**
  * This path returns three random recipes
  */
-router.get("/random", async (req, res, next) => {
-  try {
-    const user_id = req.session.user_id;
-    const randomRecipesIds = await recipes_utils.getRandomRecipes();
-    let recipes_id_array_with_details = await recipes_utils.getRecipes(randomRecipesIds);
-    const results = await recipes_utils.getPreviewRecipes(recipes_id_array_with_details,user_id);
-    res.send(results);
-  } catch (error) {
-    next(error);
-  }
-});
+// router.get("/random", async (req, res, next) => {
+//   try {
+//     const user_id = req.session.user_id;
+//     const randomRecipesIds = await recipes_utils.getRandomRecipes();
+//     let recipes_id_array_with_details = await recipes_utils.getRecipes(randomRecipesIds);
+//     const results = await recipes_utils.getPreviewRecipes(recipes_id_array_with_details,user_id);
+//     res.send(results);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 router.get("/searchRecipes", async (req, res, next) => {
   try {
