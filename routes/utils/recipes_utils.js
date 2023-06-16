@@ -88,19 +88,19 @@ return {
 }
 
 
-async function getFromSearchRecipes({ query, number, cuisine, diet, intolerances, sort }) {
-    let numberIn = number ? number : 5;
+async function getFromSearchRecipes({ amount, cousine, diet, intollerances, search }) {
+    let numberIn = amount ? amount : 5;
 
     const data = await axios.get(`${api_domain}/complexSearch`, {
         params: {
-            query: query,
+            query: search,
             number: numberIn,
-            cuisine: cuisine,
+            cuisine: cousine,
             diet: diet,
-            intolerances: intolerances,
-            instructionsRequired: true,
+            intolerances: intollerances,
+            fillIngredients: true,
             addRecipeInformation: true,
-            sort: sort,
+            // sort: sort,
             apiKey: process.env.spooncular_apiKey
         }
     });
