@@ -56,3 +56,64 @@ CREATE TABLE recipeoptions (
     option_type VARCHAR(255),
     choice VARCHAR(255)
 );
+
+INSERT INTO recipeoptions (option_type, choice)
+VALUES
+    ('Cuisines', 'African'),
+    ('Cuisines', 'Asian'),
+    ('Cuisines', 'American'),
+    ('Cuisines', 'British'),
+    ('Cuisines', 'Cajun'),
+    ('Cuisines', 'Caribbean'),
+    ('Cuisines', 'Chinese'),
+    ('Cuisines', 'Eastern European'),
+    ('Cuisines', 'European'),
+    ('Cuisines', 'French'),
+    ('Cuisines', 'German'),
+    ('Cuisines', 'Greek'),
+    ('Cuisines', 'Indian'),
+    ('Cuisines', 'Irish'),
+    ('Cuisines', 'Italian'),
+    ('Cuisines', 'Japanese'),
+    ('Cuisines', 'Jewish'),
+    ('Cuisines', 'Korean'),
+    ('Cuisines', 'Latin American'),
+    ('Cuisines', 'Mediterranean'),
+    ('Cuisines', 'Mexican'),
+    ('Cuisines', 'Middle Eastern'),
+    ('Cuisines', 'Nordic'),
+    ('Cuisines', 'Southern'),
+    ('Cuisines', 'Spanish'),
+    ('Cuisines', 'Thai'),
+    ('Cuisines', 'Vietnamese');
+
+
+INSERT INTO recipeoptions (option_type, choice)
+VALUES
+    ('Intolerances', 'Dairy'),
+    ('Intolerances', 'Egg'),
+    ('Intolerances', 'Gluten'),
+    ('Intolerances', 'Grain'),
+    ('Intolerances', 'Peanut'),
+    ('Intolerances', 'Seafood'),
+    ('Intolerances', 'Sesame'),
+    ('Intolerances', 'Shellfish'),
+    ('Intolerances', 'Soy'),
+    ('Intolerances', 'Sulfite'),
+    ('Intolerances', 'Tree Nut'),
+    ('Intolerances', 'Wheat');
+
+
+INSERT INTO recipeoptions (option_type, choice)
+VALUES
+    ('Diet Definitions', 'Gluten Free'),
+    ('Diet Definitions', 'Ketogenic'),
+    ('Diet Definitions', 'Vegetarian'),
+    ('Diet Definitions', 'Lacto-Vegetarian'),
+    ('Diet Definitions', 'Ovo-Vegetarian'),
+    ('Diet Definitions', 'Vegan'),
+    ('Diet Definitions', 'Pescetarian'),
+    ('Diet Definitions', 'Paleo'),
+    ('Diet Definitions', 'Primal'),
+    ('Diet Definitions', 'Low FODMAP'),
+    ('Diet Definitions', 'Whole30');
