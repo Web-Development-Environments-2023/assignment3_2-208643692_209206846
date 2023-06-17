@@ -127,10 +127,10 @@ async function getPreviewRecipes(arrayRecipes, user_id) {
         const favoriteRecipes = await DButils.execQuery(`select recipe_id from favoriterecipes where user_id = '${user_id}'`);
         const watchedRecipes = await DButils.execQuery(`select recipe_id from lastwatch where user_id = '${user_id}'`);
         arrayPreviewRecipes.forEach(recipe => {
-            if (favoriteRecipes.find(element => element.recipe_id === recipe.recipe_id)) {
+            if (favoriteRecipes.find(element => element.recipe_id === recipe.recipeId)) {
                 recipe.favorite = true;
             }
-            if (watchedRecipes.find(element => element.recipe_id === recipe.recipe_id)) {
+            if (watchedRecipes.find(element => element.recipe_id === recipe.recipeId)) {
                 recipe.watched = true;
             }
         });
