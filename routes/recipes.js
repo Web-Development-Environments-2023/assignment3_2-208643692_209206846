@@ -67,19 +67,4 @@ router.get('/Options/RecipeSearch', async (req,res,next)=>{
   }
 })
 
-/**
- * This path returns the family recipes that were saved by the logged-in user
- */
-router.get('/MyFamilyRecipes/All', async (req, res,next) => {
-  try{
-    const recipes_id = await user_utils.getFamilyRecipes();
-    let recipes_id_array = [];
-    recipes_id.map((element) => recipes_id_array.push(element.id)); //extracting the recipe ids into array
-    const results = await recipes_utils.getMyRecipes(recipes_id_array);
-    res.status(200).send(results);
-  } catch(error){
-    next(error);
-  }
-});
-
 module.exports = router;
