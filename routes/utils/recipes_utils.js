@@ -57,8 +57,8 @@ async function getRandomRecipes(){
     return res
 }
 
-async function getRecipesFromLastWatched() {
-    const query = "SELECT * FROM LastWatch ORDER BY date DESC LIMIT 3";
+async function getRecipesFromLastWatched(user_id) {
+    const query = `SELECT * FROM LastWatch WHERE user_id='${user_id}' ORDER BY date DESC LIMIT 3`;
     const result = await DButils.execQuery(query);
     return result;
   }

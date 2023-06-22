@@ -29,6 +29,7 @@ router.get("/searchRecipes", async (req, res, next) => {
       throw { status: 404, message: "No recipes found" };
     }
     const user_id = req.session.user_id;
+    arrayRecipes.map((r) => r.popularity = r.aggregateLikes)
     res.send(await recipes_utils.getPreviewRecipes(arrayRecipes, user_id));
 
   } catch (error) {
